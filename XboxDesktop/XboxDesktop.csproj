@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BackGround.png" />
+    <None Remove="BackGroundApp.png" />
+    <None Remove="TemplateGame.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="104.4.240" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XInputDotNetPure\XInputDotNetPure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="BackGround.png" />
+    <Resource Include="BackGroundApp.png" />
+    <Resource Include="TemplateGame.png" />
+  </ItemGroup>
+
+</Project>
