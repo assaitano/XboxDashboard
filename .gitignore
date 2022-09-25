@@ -26,6 +26,7 @@
 *.unityPackage
 
 XboxDesktop/bin/x64/Debug/netcoreapp3.1/runtimes/*
+XboxDesktop/bin/Debug/*
 libcef.dll
 .vs/
 obj/
