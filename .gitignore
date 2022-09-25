@@ -26,9 +26,9 @@
 *.unityPackage
 
 XboxDesktop/bin/x64/Debug/netcoreapp3.1/runtimes/*
-XboxDesktop/bin/Debug/**
-XboxDesktop/bin/Debug/netcoreapp3.1/*
-.vs/**
+XboxDesktop/bin/Debug/*
+.vs/*
+.vs/XboxDesktop/*
 
 obj/
 BinariesX86/
