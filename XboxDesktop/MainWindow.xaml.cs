@@ -42,8 +42,16 @@ namespace XboxDesktop
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
         private ReporterState reporterState = new ReporterState();
         private Control[] controllerControls;
         private Control[] stickControls;
@@ -238,7 +246,12 @@ namespace XboxDesktop
                     // You can start any process, HelloWorld is a do-nothing example.
                     myProcess.StartInfo.FileName = Program.Games[id].DiskLink;
                     myProcess.StartInfo.CreateNoWindow = true;
+                    myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
                     myProcess.Start();
+
+                    MaximizeProcessWindow(myProcess.MainWindowTitle);
+
+
                     // This code assumes the process you are starting will terminate itself.
                     // Given that it is started without a window so you cannot terminate it
                     // on the desktop, it must terminate itself or you can do it programmatically
@@ -250,6 +263,41 @@ namespace XboxDesktop
                 Console.WriteLine(exp.Message);
             }
         }
+
+        /// <summary>
+        /// WINDOWPLACEMENT showCmd - 1 for normal, 2 for minimized, 3 for maximized, 0 for hide 
+        /// </summary>
+        public static void MaximizeProcessWindow(string processName)
+        {
+            foreach (Process proc in Process.GetProcesses())
+            {
+                if (proc.ProcessName.Equals(processName))
+                {
+                    try
+                    {
+                        WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                        GetWindowPlacement(proc.MainWindowHandle, ref wp);
+
+                        // Maximize window if it is in a normal state
+                        // You can also do the reverse by simply checking and setting 
+                        // the value of wp.showCmd
+                        if (wp.showCmd == 1)
+                        {
+                            wp.showCmd = 3;
+                        }
+                        SetWindowPlacement(proc.MainWindowHandle, ref wp);
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        // log exception here and do something
+                    }
+                }
+            }
+        }
+
+
+
         /*
         public Button DeepCopy(Button button)
         {

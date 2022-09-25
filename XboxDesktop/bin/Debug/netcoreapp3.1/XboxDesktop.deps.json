@@ -9,6 +9,7 @@
       "XboxDesktop/1.0.0": {
         "dependencies": {
           "CefSharp.Wpf.NETCore": "104.4.240",
+          "ControlzEx": "5.0.1",
           "HtmlAgilityPack": "1.11.45",
           "XInputDotNetPure": "1.0.0",
           "chromiumembeddedframework.runtime.win-arm64": "104.4.24",
@@ -21,7 +22,7 @@
       },
       "CefSharp.Common.NETCore/104.4.240": {
         "dependencies": {
-          "System.Text.Json": "5.0.0",
+          "System.Text.Json": "5.0.1",
           "chromiumembeddedframework.runtime": "104.4.24"
         },
         "runtimeTargets": {
@@ -391,6 +392,18 @@
           }
         }
       },
+      "ControlzEx/5.0.1": {
+        "dependencies": {
+          "Microsoft.Xaml.Behaviors.Wpf": "1.1.31",
+          "System.Text.Json": "5.0.1"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/ControlzEx.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.1.15"
+          }
+        }
+      },
       "HtmlAgilityPack/1.11.45": {
         "runtime": {
           "lib/netstandard2.0/HtmlAgilityPack.dll": {
@@ -399,11 +412,19 @@
           }
         }
       },
-      "System.Text.Json/5.0.0": {
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.31": {
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.31.10800"
+          }
+        }
+      },
+      "System.Text.Json/5.0.1": {
         "runtime": {
           "lib/netcoreapp3.0/System.Text.Json.dll": {
             "assemblyVersion": "5.0.0.0",
-            "fileVersion": "5.0.20.51904"
+            "fileVersion": "5.0.220.61120"
           }
         }
       },
@@ -462,6 +483,13 @@
       "path": "chromiumembeddedframework.runtime.win-x86/104.4.24",
       "hashPath": "chromiumembeddedframework.runtime.win-x86.104.4.24.nupkg.sha512"
     },
+    "ControlzEx/5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DVJJmmnKXcVh3Bs2gKpAdPCT8HrkYTagSbFg0P9xHjp8dox9bKeaoVj9VGhPRzP9+LHs5MUXxN07/oGqeXNNcg==",
+      "path": "controlzex/5.0.1",
+      "hashPath": "controlzex.5.0.1.nupkg.sha512"
+    },
     "HtmlAgilityPack/1.11.45": {
       "type": "package",
       "serviceable": true,
@@ -469,12 +497,19 @@
       "path": "htmlagilitypack/1.11.45",
       "hashPath": "htmlagilitypack.1.11.45.nupkg.sha512"
     },
-    "System.Text.Json/5.0.0": {
+    "Microsoft.Xaml.Behaviors.Wpf/1.1.31": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+luxMQNZ2WqeffBU7Ml6njIvxc8169NW2oU+ygNudXQGZiarjE7DOtN7bILiQjTZjkmwwRZGTtLzmdrSI/Ustw==",
-      "path": "system.text.json/5.0.0",
-      "hashPath": "system.text.json.5.0.0.nupkg.sha512"
+      "sha512": "sha512-LZpuf82ACZWldmfMuv3CTUMDh3o0xo0uHUaybR5HgqVLDBJJ9RZLykplQ/bTJd0/VDt3EhD4iDgUgbdIUAM+Kg==",
+      "path": "microsoft.xaml.behaviors.wpf/1.1.31",
+      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.31.nupkg.sha512"
+    },
+    "System.Text.Json/5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/UM3UK1dXKl8Ybysg/21gM4S8DJgkR+yLU8JwqCVbuNqQNImelntgYFAN5QxR8sJJ1kMx//hOUdf0lltosi8cQ==",
+      "path": "system.text.json/5.0.1",
+      "hashPath": "system.text.json.5.0.1.nupkg.sha512"
     },
     "XInputDotNetPure/1.0.0": {
       "type": "project",
