@@ -27,6 +27,8 @@ using System.Runtime.InteropServices;
 using System.Xml;
 using System.Windows.Markup;
 using System.Xml.Linq;
+using System.Windows.Automation;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace XboxDesktop
 {
@@ -200,22 +202,43 @@ namespace XboxDesktop
         {
             GameTemplate.Visibility = Visibility.Hidden;
 
-            for (int i = 0; i < Program.Games.Count; i++)
+            int templateX = (int)GameTemplate.Margin.Left;
+            int templateY = (int)GameTemplate.Margin.Top;
+            int width = 305;
+            int height = 305;
+            int border = 3;
+
+            int columnCount = 4;
+            int rowCount = 1;
+            if (Program.Games.Count / columnCount > 0)
+                rowCount = Program.Games.Count / columnCount + Program.Games.Count % columnCount;
+
+            int gameID = 0;
+
+            for (int mR = 0; mR < rowCount; mR++)
             {
-                var newButton = new Button();
-                newButton = (Button)CloneElement(GameTemplate);
-                newButton.Name = "btnGameId_" + i;
-                newButton.Margin = new Thickness(GameTemplate.Margin.Left + 300 * i, GameTemplate.Margin.Top, 0, 0);
+                for (int mC = 0; mC < columnCount; mC++)
+                {
+                    var newButton = new Button();
+                    newButton = (Button)CloneElement(GameTemplate);
+                    newButton.Name = "btnGameId_" + gameID;
+                    var x = templateX + mC * (width + border);
+                    var y = templateY + mR * (height + border);
+                    newButton.Margin = new Thickness(x, y, 0, 0);
 
-                GamesApps.Children.Add(newButton);
+                    GamesApps.Children.Add(newButton);
 
-                Image img = new Image();
-                img.Source = Net.LoadImages(Program.Games[i].PosterURL);
-                img.Stretch = Stretch.UniformToFill;
+                    Image img = new Image();
+                    img.Source = Net.LoadImages(Program.Games[gameID].PosterURL);
+                    img.Stretch = Stretch.UniformToFill;
 
-                newButton.Content = img;
-                newButton.Visibility = Visibility.Visible;
-                newButton.Click += btnGame_Click;
+                    newButton.Content = img;
+                    newButton.Visibility = Visibility.Visible;
+                    newButton.Click += btnGame_Click;
+
+                    gameID++;
+                    if (gameID == Program.Games.Count) break;
+                }
             }
 
             //imgGameTemplate.Source = Net.LoadImages(Program.Games[0].PosterURL);

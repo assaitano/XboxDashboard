@@ -124,6 +124,7 @@ namespace XboxDesktop
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(file);
+
                 Game game = new Game();
                 XmlNode node;
                 //
