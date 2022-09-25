@@ -27,8 +27,8 @@
 
 XboxDesktop/bin/x64/Debug/netcoreapp3.1/runtimes/*
 XboxDesktop/bin/Debug/*
-libcef.dll
-.vs/
+.vs/*
+
 obj/
 BinariesX86/
 BinariesX64/
