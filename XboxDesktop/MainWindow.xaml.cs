@@ -274,8 +274,6 @@ namespace XboxDesktop
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Click;
                     newButton.Loaded += btnGame_Load;
-                    //var newButtonImage = GetButtonImage(newButton);
-                    //newButtonImage.Source = Net.LoadImages(Program.Games[gameID].PosterURL);
 
                     gameID++;
                     if (gameID == Program.Games.Count) break;
