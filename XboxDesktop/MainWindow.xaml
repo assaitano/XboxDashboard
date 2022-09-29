@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:XboxDesktop"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
     Title="MainWindow"
     Width="1920"
     Height="1080"
@@ -18,23 +19,31 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     WindowStyle="None"
-    mc:Ignorable="d">
-    <Viewbox>
+    mc:Ignorable="d"
+    Loaded="WindowLauncher">
+    <Window.Resources>
+        <ResourceDictionary Source="DesignTimeResources.xaml" />
+    </Window.Resources>
 
+    <Viewbox>
         <Grid x:Name="Dashboard" Height="1080" Width="1920">
-            <Grid x:Name="Desktop" d:IsHidden="True">
+            <Grid x:Name="Desktop">
                 <Image
                     x:Name="BackGround_png"
-                    Source="/BackGround.png"
-                    Stretch="Fill" />
+                    Stretch="Fill" Source="/Images/BackGround.png" >
+                    <Image.OpacityMask>
+                        <ImageBrush ImageSource="/Images/BackGround.png" Stretch="UniformToFill"/>
+                    </Image.OpacityMask>
+                </Image>
                 <Button
                     x:Name="button_Copy5"
                     Width="390"
-                    Height="381"
+                    Height="380"
                     Margin="98,259,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}"
-            />
+                    VerticalAlignment="Top"
+                    Style="{DynamicResource ButtonStyle}" Click="button_Copy5_Click" Background="{x:Null}"
+                   />
                 <Button
                     x:Name="button"
                     Width="197"
@@ -42,7 +51,7 @@
                     Margin="536,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" Background="{x:Null}"
-            />
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy"
                     Width="197"
@@ -50,7 +59,8 @@
                     Margin="752,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Button" Background="{x:Null}" />
+                    Content="Button" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy1"
                     Width="198"
@@ -58,7 +68,8 @@
                     Margin="969,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Button" Background="{x:Null}" />
+                    Content="Button" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy2"
                     Width="198"
@@ -66,7 +77,8 @@
                     Margin="1185,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Button" Background="{x:Null}" />
+                    Content="Button" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy3"
                     Width="198"
@@ -74,7 +86,8 @@
                     Margin="1403,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Button" Background="{x:Null}" />
+                    Content="Button" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy4"
                     Width="198"
@@ -82,51 +95,47 @@
                     Margin="1620,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Button" Background="{x:Null}" />
+                    Content="Button" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="bGames_Apps"
                     Width="390"
                     Height="215"
                     Margin="98,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="BGames_Apps">
-                    <Image x:Name="imgNews4" Width="390" Height="215" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxHeight="215"/>
-                </Button>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGames_Apps"
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="btnNews1"
                     Width="415"
                     Height="215"
                     Margin="535,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click">
-                    <Image x:Name="imgNews1" Width="415" Height="215" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxHeight="215"/>
-                </Button>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click" 
+                    Style="{DynamicResource ButtonStyle}">
+                 </Button>
                 <Button
                     x:Name="btnNews2"
                     Width="415"
                     Height="215"
                     Margin="969,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}"
-                    Click="btnNews_Click">
-                    <Image x:Name="imgNews2" Width="415" Height="215" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxHeight="215"/>
-                </Button>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click"
+                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="btnNews3"
                     Width="415"
                     Height="215"
                     Margin="1403,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" 
-                    Click="btnNews_Click">
-                    <Image x:Name="imgNews3" Width="415" Height="215" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" MaxHeight="215"/>
-                </Button>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click"
+                    Style="{DynamicResource ButtonStyle}"/>
             </Grid>
-            <Grid x:Name="GamesApps" Background="#FF131313">
+            <Grid x:Name="GamesApps" Background="#FF131313" d:IsHidden="True">
 
                 <Grid Margin="532,180,56,0"/>
 
-                <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/BackGroundApp.png" Stretch="Fill"/>
+                <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/Images/BackGroundApp.png" Stretch="Fill"/>
 
                 <Button x:Name="Games" Content="Games" Margin="0,154,1427,861" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Apps" Content="Apps" Margin="0,219,1427,796" Background="{x:Null}" Height="65"/>
@@ -140,7 +149,8 @@
                     Height="308"
                     Margin="565,264,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click"/>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click" Padding="0,0,0,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch"
+                    Style="{DynamicResource ButtonStyle}"/>
 
             </Grid>
             <Grid x:Name="WebBrowser" d:IsHidden="True">

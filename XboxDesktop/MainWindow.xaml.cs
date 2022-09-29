@@ -29,6 +29,7 @@ using System.Windows.Markup;
 using System.Xml.Linq;
 using System.Windows.Automation;
 using Microsoft.Xaml.Behaviors.Core;
+using ModernWpf;
 
 namespace XboxDesktop
 {
@@ -40,6 +41,21 @@ namespace XboxDesktop
         RunGame
     }
 
+    public struct NewsButton
+    {
+        public string imageURL;
+        public string postURL;
+        public Image image;
+        public Button button;
+
+        public NewsButton(Button but)
+        {
+            this.button = but;
+            this.image = new Image();
+            this.imageURL = "";
+            this.postURL = "";
+        }
+    }
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -59,12 +75,12 @@ namespace XboxDesktop
         private Control[] stickControls;
         private Point[] stickControlPositions;
 
-        private DispatcherTimer clock;
-
-        List<string> NewsImageUrl = new List<string>();
-        List<string> NewsPostUrl = new List<string>();
+        List<NewsButton> newsButtons = new List<NewsButton>();
+        List<Button> btnNewsList = new List<Button>();
 
         MenuState menuState = MenuState.Desktop;
+
+        private DispatcherTimer clock;
 
         public MainWindow()
         {
@@ -76,10 +92,7 @@ namespace XboxDesktop
 
             UpdateRednderState();
 
-            UpdateRenderGames();
-
-            //System.Diagnostics.Debug.WriteLine("SomeText");
-
+            btnNewsList = new List<Button>() { btnNews1, btnNews2, btnNews3 };
             /*
             controllerControls = new Control[] {
                 picController1,
@@ -104,9 +117,15 @@ namespace XboxDesktop
 
             //Program.StartPolling();
 
-            UpdateNews();
+            //UpdateNews();
 
             createNewTimer();
+        }
+
+        private void WindowLauncher(object sender, RoutedEventArgs e)
+        {
+            UpdateNews();
+            UpdateRenderGames();
         }
 
         private void UpdateRednderState()
@@ -130,7 +149,7 @@ namespace XboxDesktop
                     break;
             }
         }
-
+              
         private void UpdateNews()
         {
             if (Net.CheckConnection("https://google.com"))
@@ -142,7 +161,6 @@ namespace XboxDesktop
 
         private void ParseContentFromXBOX(HtmlAgilityPack.HtmlDocument doc)
         {
-
             string imageNewsURL = "";
             string newsURL = "";
             List<string> ArhiveNewsImages = new List<string>();
@@ -163,19 +181,42 @@ namespace XboxDesktop
             {
                 imageNewsURL = getBetween(ArhiveNewsImages[i], "<img", " class");
                 imageNewsURL = getBetween(imageNewsURL, "src=\"", "\"");
-
-                NewsImageUrl.Add(imageNewsURL);
-
                 newsURL = getBetween(ArhiveNewsPost[i], "feed__title", "h3");
                 newsURL = getBetween(newsURL, "href=\"", "\"");
 
-                NewsPostUrl.Add(newsURL);
+                var nb = new NewsButton();
+                nb.imageURL = imageNewsURL;
+                nb.postURL = newsURL;
+                nb.button = btnNewsList[0];
+                nb.image = GetButtonImage(btnNewsList[i]);
+
+                newsButtons.Add(nb);
+
+                newsButtons[i].image.Source = Net.LoadImages(newsButtons[i].imageURL);
             }
 
             //update news on menu
-            imgNews1.Source = Net.LoadImages(NewsImageUrl[0]);
-            imgNews2.Source = Net.LoadImages(NewsImageUrl[1]);
-            imgNews3.Source = Net.LoadImages(NewsImageUrl[2]);
+
+            //Image img1 = new Image();
+            //newsButtons[0].image.Source = Net.LoadImages(newsButtons[0].imageURL);
+            //img1.Stretch = Stretch.UniformToFill;
+            //var t = GetButtonImage(bGames_Apps);
+            //t.Source = Net.LoadImages(newsButtons[0].imageURL);
+            
+            /*
+            Image img2 = new Image();
+            img2.Source = Net.LoadImages(NewsImageUrl[1]);
+            img2.Stretch = Stretch.UniformToFill;
+            btnNews2.Content = img2;
+            Image img3 = new Image();
+            img3.Source = Net.LoadImages(NewsImageUrl[2]);
+            img3.Stretch = Stretch.UniformToFill;
+            btnNews3.Content = img3;
+            var brush = new ImageBrush();
+            
+            brush.ImageSource = Net.LoadImages(NewsImageUrl[2]);
+            */
+            //btnNews3.Background = brush;
         }
 
         private void btnNews_Click(object sender, RoutedEventArgs e)
@@ -188,11 +229,13 @@ namespace XboxDesktop
             {
                 menuState = MenuState.WebBrowser;
                 UpdateRednderState();
-                webBrowser.Address = NewsPostUrl[id - 1];
+                webBrowser.Address = newsButtons[id-1].postURL;
             }
         }
 
-        private void BGames_Apps(object sender, RoutedEventArgs e)
+        //===Games============================
+
+        private void btnGames_Apps(object sender, RoutedEventArgs e)
         {
             menuState = MenuState.GameApp;
             UpdateRednderState();
@@ -319,18 +362,6 @@ namespace XboxDesktop
             }
         }
 
-
-
-        /*
-        public Button DeepCopy(Button button)
-        {
-
-            string buttonXaml = XamlWriter.Save(button);
-            StringReader stringReader = new StringReader(buttonXaml);
-            XmlReader xmlReader = XmlReader.Create(stringReader);
-            Button newButton = (Button)XamlReader.Load(xmlReader);
-            return newButton;
-        }*/
         public Button DeepCopy(Button element)
         {
             string shapestring = XamlWriter.Save(element);
@@ -362,6 +393,18 @@ namespace XboxDesktop
             return "";
         }
 
+        private Image GetButtonImage(Button but)
+        {
+            var count = 0;
+            count = VisualTreeHelper.GetChildrenCount(but);
+            var border = VisualTreeHelper.GetChild(but, 0);
+
+            count = VisualTreeHelper.GetChildrenCount(border);
+            var image = VisualTreeHelper.GetChild(border, 0);
+
+            return (Image) image;
+        }
+        
         private void createNewTimer()
         {
             clock = new DispatcherTimer();
@@ -592,6 +635,13 @@ namespace XboxDesktop
         private void Game1_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void button_Copy5_Click(object sender, RoutedEventArgs e)
+        {
+            var t = GetButtonImage(btnNews1);
+
+            System.Diagnostics.Debug.WriteLine(t);
         }
     }
 }
