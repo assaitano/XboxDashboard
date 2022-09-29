@@ -109,6 +109,8 @@ namespace XboxDesktop
         */
         //}
 
+        //======================DB============================
+
         public static void LoadDB()
         {
             foreach (string file in Directory.GetFiles("./DB/", "*.xml"))

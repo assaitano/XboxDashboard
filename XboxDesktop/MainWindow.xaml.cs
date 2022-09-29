@@ -149,7 +149,9 @@ namespace XboxDesktop
                     break;
             }
         }
-              
+
+        //======================News============================
+
         private void UpdateNews()
         {
             if (Net.CheckConnection("https://google.com"))
@@ -194,29 +196,6 @@ namespace XboxDesktop
 
                 newsButtons[i].image.Source = Net.LoadImages(newsButtons[i].imageURL);
             }
-
-            //update news on menu
-
-            //Image img1 = new Image();
-            //newsButtons[0].image.Source = Net.LoadImages(newsButtons[0].imageURL);
-            //img1.Stretch = Stretch.UniformToFill;
-            //var t = GetButtonImage(bGames_Apps);
-            //t.Source = Net.LoadImages(newsButtons[0].imageURL);
-            
-            /*
-            Image img2 = new Image();
-            img2.Source = Net.LoadImages(NewsImageUrl[1]);
-            img2.Stretch = Stretch.UniformToFill;
-            btnNews2.Content = img2;
-            Image img3 = new Image();
-            img3.Source = Net.LoadImages(NewsImageUrl[2]);
-            img3.Stretch = Stretch.UniformToFill;
-            btnNews3.Content = img3;
-            var brush = new ImageBrush();
-            
-            brush.ImageSource = Net.LoadImages(NewsImageUrl[2]);
-            */
-            //btnNews3.Background = brush;
         }
 
         private void btnNews_Click(object sender, RoutedEventArgs e)
@@ -358,6 +337,8 @@ namespace XboxDesktop
                 }
             }
         }
+
+        //======================Other============================
 
         public Button DeepCopy(Button element)
         {
@@ -605,8 +586,6 @@ namespace XboxDesktop
                     };
                     InputManager.Current.ProcessInput(e);
 
-                    System.Diagnostics.Debug.WriteLine(e);
-
                     // Note: Based on your requirements you may also need to fire events for:
                     // RoutedEvent = Keyboard.PreviewKeyDownEvent
                     // RoutedEvent = Keyboard.KeyUpEvent
@@ -622,19 +601,6 @@ namespace XboxDesktop
                 menuState = MenuState.Desktop;
                 UpdateRednderState();
             }
-
-        }
-
-        private void Game1_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void button_Copy5_Click(object sender, RoutedEventArgs e)
-        {
-            var t = GetButtonImage(btnNews1);
-
-            System.Diagnostics.Debug.WriteLine(t);
         }
     }
 }

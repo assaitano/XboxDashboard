@@ -10,7 +10,8 @@
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4" />
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
-
+    <Duration x:Key="AnimationTime">0:0:0.06</Duration>
+    
     <!--=====================================================-->
 
     <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
@@ -55,16 +56,20 @@
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                             <Setter Property="BorderThickness" Value="0" />
                         </Trigger>
+                        
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
                         </Trigger>
+                        
                         <Trigger Property="IsKeyboardFocused" Value="true">
                             <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
                         </Trigger>
+                        
                         <Trigger Property="IsPressed" Value="true">
                             <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}" />
                             <Setter Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
                         </Trigger>
+                        
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Background" Value="{StaticResource Button.Disabled.Background}" />
                         </Trigger>
@@ -72,6 +77,31 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="Button.Click">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            
+                            <ColorAnimation 
+                                Storyboard.TargetProperty="(Button.BorderBrush).(SolidColorBrush.Color)"
+                                From="#FF72FC72" To="#FF48A148" Duration="0:0:0.12" AutoReverse="True" /> 
+                            
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Width" By="-6" Duration="{StaticResource AnimationTime}"  AutoReverse="True"
+                                />
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Height" By="-6" Duration="{StaticResource AnimationTime}"  AutoReverse="True"
+                                /> 
+                            <ThicknessAnimation
+                                Storyboard.TargetProperty="Margin" By="3,3,0,0" Duration="{StaticResource AnimationTime}" AutoReverse="True"
+                                />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+        </Style.Triggers>
     </Style>
 
     <!--=====================================================-->

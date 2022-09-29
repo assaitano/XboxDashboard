@@ -42,7 +42,7 @@
                     Margin="98,259,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Style="{DynamicResource ButtonStyle}" Click="button_Copy5_Click" Background="{x:Null}"
+                    Style="{DynamicResource ButtonStyle}" Background="{x:Null}"
                    />
                 <Button
                     x:Name="button"
