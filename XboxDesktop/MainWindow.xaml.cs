@@ -233,7 +233,7 @@ namespace XboxDesktop
             }
         }
 
-        //===Games============================
+        //======================Games============================
 
         private void btnGames_Apps(object sender, RoutedEventArgs e)
         {
@@ -270,28 +270,27 @@ namespace XboxDesktop
                     newButton.Margin = new Thickness(x, y, 0, 0);
 
                     GamesApps.Children.Add(newButton);
-
-                    Image img = new Image();
-                    img.Source = Net.LoadImages(Program.Games[gameID].PosterURL);
-                    img.Stretch = Stretch.UniformToFill;
-
-                    newButton.Content = img;
+                                       
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Click;
+                    newButton.Loaded += btnGame_Load;
+                    //var newButtonImage = GetButtonImage(newButton);
+                    //newButtonImage.Source = Net.LoadImages(Program.Games[gameID].PosterURL);
 
                     gameID++;
                     if (gameID == Program.Games.Count) break;
                 }
             }
+        }
 
-            //imgGameTemplate.Source = Net.LoadImages(Program.Games[0].PosterURL);
-
-            //Copy children
-            //var newImage = new Image();
-            //newImage = (Image)CloneElement(imgGameTemplate);
-            //newImage.Name = "TestImageGenerate";
-
-
+        private void btnGame_Load(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            string name = btn.Name;
+            name = name.Replace("btnGameId_", "");
+            int id = Int32.Parse(name);
+            var newButtonImage = GetButtonImage(btn);
+            newButtonImage.Source = Net.LoadImages(Program.Games[id].PosterURL);
         }
 
         private void btnGame_Click(object sender, RoutedEventArgs e)
@@ -395,11 +394,7 @@ namespace XboxDesktop
 
         private Image GetButtonImage(Button but)
         {
-            var count = 0;
-            count = VisualTreeHelper.GetChildrenCount(but);
             var border = VisualTreeHelper.GetChild(but, 0);
-
-            count = VisualTreeHelper.GetChildrenCount(border);
             var image = VisualTreeHelper.GetChild(border, 0);
 
             return (Image) image;

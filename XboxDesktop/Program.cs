@@ -22,15 +22,6 @@ namespace XboxDesktop
             public string Title;
             public string PosterURL;
             public string DiskLink;
-
-            /*
-            public Game()
-            {
-                Title = "";
-                PosterURL = "";
-                DiskLink = "";
-            }
-            */
         }
 
         public static List<Game> Games = new List<Game>();

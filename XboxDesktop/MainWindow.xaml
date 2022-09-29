@@ -149,8 +149,8 @@
                     Height="308"
                     Margin="565,264,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click" Padding="0,0,0,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch"
-                    Style="{DynamicResource ButtonStyle}"/>
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click"
+                    Style="{DynamicResource ButtonGamesStyle}"/>
 
             </Grid>
             <Grid x:Name="WebBrowser" d:IsHidden="True">
