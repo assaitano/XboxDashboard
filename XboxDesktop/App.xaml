@@ -7,14 +7,223 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ui:ThemeResources>
-                    <ui:ThemeResources.ThemeDictionaries>
-                        <ResourceDictionary x:Key="DesignTimeResources.xaml" />
-                    </ui:ThemeResources.ThemeDictionaries>
-                </ui:ThemeResources>
-                <ui:XamlControlsResources />
-            </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD" />
+            <SolidColorBrush x:Key="Button.Static.Border" Color="Transparent" />
+            <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD" />
+            <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#48A148" />
+            <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />
+            <SolidColorBrush x:Key="Button.Pressed.Border" Color="#72FC72" />
+            <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4" />
+            <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
+            <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
+            <Duration x:Key="Button.Press.Time">0:0:0.05</Duration>
+
+            <!--=====================================================-->
+
+            <Storyboard x:Key = "ButtonAnimation" Completed="btnAnimationEnd">
+                <ParallelTimeline>
+                    <ColorAnimationUsingKeyFrames
+                                    Storyboard.TargetProperty="(Button.BorderBrush).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.20">
+                        <ColorAnimationUsingKeyFrames.KeyFrames>
+                            <LinearColorKeyFrame KeyTime="0:0:0" Value="#72FC72" />
+                            <LinearColorKeyFrame KeyTime="0:0:0.20" Value="#72FC72" />
+                            <LinearColorKeyFrame KeyTime="0:0:0.20" Value="#48A148"/>
+                        </ColorAnimationUsingKeyFrames.KeyFrames>
+                    </ColorAnimationUsingKeyFrames>
+
+                    <DoubleAnimation
+                        Storyboard.TargetProperty="Width" By="-8" Duration="{StaticResource Button.Press.Time}"  AutoReverse="True"
+                    />
+                    <DoubleAnimation
+                        Storyboard.TargetProperty="Height" By="-8" Duration="{StaticResource Button.Press.Time}"  AutoReverse="True"
+                    />
+                    <ThicknessAnimation
+                        Storyboard.TargetProperty="Margin" By="4,4,0,0" Duration="{StaticResource Button.Press.Time}" AutoReverse="True"
+                     />
+                </ParallelTimeline>
+            </Storyboard>
+
+            <!--=====================================================-->
+
+            <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+                <!-- Disable DotNet Black focused border-->
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle StrokeThickness="2" Opacity="0" StrokeDashArray="2"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
+                <Setter Property="BorderThickness" Value="4" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Padding" Value="1" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                SnapsToDevicePixels="true">
+                                <Image 
+                                    x:Name="image" 
+                                    Stretch="UniformToFill" 
+                                    Source="/template.jpg"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Trigger>
+
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}" />
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" Value="{StaticResource Button.Disabled.Background}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard Storyboard="{StaticResource ButtonAnimation}">
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Style.Triggers>
+
+            </Style>
+
+            <!--=====================================================-->
+
+            <Style x:Key="ButtonGamesStyle" TargetType="{x:Type Button}">
+                <!-- Disable DotNet Black focused border-->
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle StrokeThickness="2" Opacity="0" StrokeDashArray="2"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
+                <Setter Property="BorderThickness" Value="4" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Padding" Value="1" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="0"
+                        SnapsToDevicePixels="true">
+
+                                <Image 
+                            x:Name="image" 
+                            Stretch="UniformToFill" 
+                            Source="/template.jpg"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Trigger>
+
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Button.Pressed.Background}" />
+                                    <Setter Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" Value="{StaticResource Button.Disabled.Background}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ParallelTimeline>
+
+                                        <ColorAnimationUsingKeyFrames
+                                    Storyboard.TargetProperty="(Button.BorderBrush).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.20">
+                                            <ColorAnimationUsingKeyFrames.KeyFrames>
+                                                <LinearColorKeyFrame KeyTime="0:0:0" Value="#72FC72" />
+                                                <LinearColorKeyFrame KeyTime="0:0:0.20" Value="#72FC72" />
+                                                <LinearColorKeyFrame KeyTime="0:0:0.20" Value="#48A148"/>
+                                            </ColorAnimationUsingKeyFrames.KeyFrames>
+                                        </ColorAnimationUsingKeyFrames>
+
+                                        <DoubleAnimation
+                                    Storyboard.TargetProperty="Width" By="-8" Duration="{StaticResource Button.Press.Time}"  AutoReverse="True"
+                                />
+                                        <DoubleAnimation
+                                    Storyboard.TargetProperty="Height" By="-8" Duration="{StaticResource Button.Press.Time}"  AutoReverse="True"
+                                />
+                                        <ThicknessAnimation
+                                    Storyboard.TargetProperty="Margin" By="4,4,0,0" Duration="{StaticResource Button.Press.Time}" AutoReverse="True"
+                                />
+                                    </ParallelTimeline>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Style.Triggers>
+
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

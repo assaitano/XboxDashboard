@@ -30,6 +30,8 @@ using System.Xml.Linq;
 using System.Windows.Automation;
 using Microsoft.Xaml.Behaviors.Core;
 using ModernWpf;
+using System.Windows.Media.Animation;
+using static XboxDesktop.Program;
 
 namespace XboxDesktop
 {
@@ -77,7 +79,7 @@ namespace XboxDesktop
 
         List<NewsButton> newsButtons = new List<NewsButton>();
         List<Button> btnNewsList = new List<Button>();
-
+        String btnLastPress = "";
         MenuState menuState = MenuState.Desktop;
 
         private DispatcherTimer clock;
@@ -119,7 +121,20 @@ namespace XboxDesktop
 
             //UpdateNews();
 
-            createNewTimer();
+            Start();
+        }
+
+        private void Start()
+        {
+            clock = new DispatcherTimer();
+            clock.Tick += new EventHandler(Update);
+            clock.Interval = new TimeSpan(0, 0, 0, 0, 16);
+            clock.Start();
+        }
+
+        private void Update(Object sender, EventArgs e)
+        {
+            checkGamePads();
         }
 
         private void WindowLauncher(object sender, RoutedEventArgs e)
@@ -148,6 +163,44 @@ namespace XboxDesktop
                     WebBrowser.Visibility = Visibility.Visible;
                     break;
             }
+        }
+
+
+        public void btnPress(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            btnLastPress = btn.Name;
+        }
+
+        public void btnPressEnd()
+        {
+            if (btnLastPress == "") return;
+            
+            var id = 0;
+            string message = btnLastPress;
+            string[] keys = new string[] { "btnNews", "btnGames_Apps" };
+
+            string sKeyResult = keys.FirstOrDefault<string>(s => message.Contains(s));
+
+            switch (sKeyResult)
+            {
+                case "btnNews":
+                    message = message.Replace("btnNews", "");
+                    id = Int32.Parse(message);
+                    if (id > 0)
+                    {
+                        menuState = MenuState.WebBrowser;
+                        UpdateRednderState();
+                        webBrowser.Address = newsButtons[id - 1].postURL;
+                    }
+                    break;
+                case "btnGames_Apps":
+                    menuState = MenuState.GameApp;
+                    UpdateRednderState();
+                    break;
+            }
+
+            btnLastPress = "";
         }
 
         //======================News============================
@@ -214,12 +267,13 @@ namespace XboxDesktop
 
         //======================Games============================
 
+        /*
         private void btnGames_Apps(object sender, RoutedEventArgs e)
         {
             menuState = MenuState.GameApp;
             UpdateRednderState();
         }
-
+        */
         private void UpdateRenderGames()
         {
             GameTemplate.Visibility = Visibility.Hidden;
@@ -378,16 +432,8 @@ namespace XboxDesktop
 
             return (Image) image;
         }
-        
-        private void createNewTimer()
-        {
-            clock = new DispatcherTimer();
-            clock.Tick += new EventHandler(checkGamePads);
-            clock.Interval = new TimeSpan(0, 0, 0, 0, 16);
-            clock.Start();
-        }
 
-        private void checkGamePads(Object sender, EventArgs e)
+        private void checkGamePads()
         {
             //UpdateState();
             //bool pressA = reporterState.LastActiveState.Buttons.A == XInputDotNetPure.ButtonState.Pressed;

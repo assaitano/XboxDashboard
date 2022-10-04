@@ -28,6 +28,8 @@ namespace XboxDesktop
 
         static ButtonsConstants lastPressButton = ButtonsConstants.None;
 
+        //======================Gamepad============================
+
         private static void DellayDoublePressGamepadState(ButtonsConstants bState)
         {
             lastPressButton = bState;
@@ -197,5 +199,7 @@ namespace XboxDesktop
             // close writer
             textWriter.Close();
         }
+
+
     }
 }

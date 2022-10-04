@@ -21,9 +21,6 @@
     WindowStyle="None"
     mc:Ignorable="d"
     Loaded="WindowLauncher">
-    <Window.Resources>
-        <ResourceDictionary Source="DesignTimeResources.xaml" />
-    </Window.Resources>
 
     <Viewbox>
         <Grid x:Name="Dashboard" Height="1080" Width="1920">
@@ -98,38 +95,41 @@
                     Content="Button" Background="{x:Null}" 
                     Style="{DynamicResource ButtonStyle}"/>
                 <Button
-                    x:Name="bGames_Apps"
+                    x:Name="btnGames_Apps"
                     Width="390"
                     Height="215"
                     Margin="98,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGames_Apps"
-                    Style="{DynamicResource ButtonStyle}"/>
+                    VerticalAlignment="Top" Background="{x:Null}"
+                    Style="{DynamicResource ButtonStyle}"
+                    Click="btnPress"/>
                 <Button
                     x:Name="btnNews1"
                     Width="415"
                     Height="215"
                     Margin="535,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click" 
-                    Style="{DynamicResource ButtonStyle}">
-                 </Button>
+                    VerticalAlignment="Top" Background="{x:Null}" 
+                    Style="{DynamicResource ButtonStyle}"
+                    Click="btnPress"/>
                 <Button
                     x:Name="btnNews2"
                     Width="415"
                     Height="215"
                     Margin="969,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click"
-                    Style="{DynamicResource ButtonStyle}"/>
+                    VerticalAlignment="Top" Background="{x:Null}"
+                    Style="{DynamicResource ButtonStyle}"
+                    Click="btnPress"/>
                 <Button
                     x:Name="btnNews3"
                     Width="415"
                     Height="215"
                     Margin="1403,691,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnNews_Click"
-                    Style="{DynamicResource ButtonStyle}"/>
+                    VerticalAlignment="Top" Background="{x:Null}"
+                    Style="{DynamicResource ButtonStyle}"
+                    Click="btnPress"/>
             </Grid>
             <Grid x:Name="GamesApps" Background="#FF131313" d:IsHidden="True">
 
