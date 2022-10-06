@@ -38,7 +38,7 @@ namespace XboxDesktop
     public enum MenuState
     {
         Desktop,
-        GameApp,
+        Libriary,
         WebBrowser,
         RunGame
     }
@@ -152,7 +152,7 @@ namespace XboxDesktop
                     WebBrowser.Visibility = Visibility.Hidden;
                     GamesApps.Visibility = Visibility.Hidden;
                     break;
-                case MenuState.GameApp:
+                case MenuState.Libriary:
                     Desktop.Visibility = Visibility.Hidden;
                     GamesApps.Visibility = Visibility.Visible;
                     WebBrowser.Visibility = Visibility.Hidden;
@@ -178,7 +178,7 @@ namespace XboxDesktop
             
             var id = 0;
             string message = btnLastPress;
-            string[] keys = new string[] { "btnNews", "btnGames_Apps" };
+            string[] keys = new string[] { "btnNews", "btLibriary" };
 
             string sKeyResult = keys.FirstOrDefault<string>(s => message.Contains(s));
 
@@ -194,8 +194,8 @@ namespace XboxDesktop
                         webBrowser.Address = newsButtons[id - 1].postURL;
                     }
                     break;
-                case "btnGames_Apps":
-                    menuState = MenuState.GameApp;
+                case "btLibriary":
+                    menuState = MenuState.Libriary;
                     UpdateRednderState();
                     break;
             }

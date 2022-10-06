@@ -20,6 +20,5 @@ namespace XboxDesktop
         {         
             ((MainWindow)System.Windows.Application.Current.MainWindow).btnPressEnd();
         }
-
     }
 }
