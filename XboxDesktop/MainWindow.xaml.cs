@@ -263,21 +263,6 @@ namespace XboxDesktop
         */
         //======================Games============================
 
-        struct GamesMatrix
-        {
-            public string gameid = "null";
-            public int row = -1;
-            public int column = -1;
-
-            public GamesMatrix(string gameid,int row,int column)
-            {
-                this.gameid = gameid;
-                this.row = row;
-                this.column = column;
-            }
-        }
-        List<GamesMatrix> gamesMatrix = new List<GamesMatrix>();
-
         int templateGameWidth = 305;
         int templateGameHeight = 305;
         int templateGameBorder = 3;
@@ -305,62 +290,50 @@ namespace XboxDesktop
             var sizeListBottom = listBottom - (rowCount * (templateGameHeight + templateGameBorder));
             listGames.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
             
-            //Create Matrix
-            int gameID = 0;
+            //Create Grid Data
+            int game = 0;
             for (int mR = 0; mR < rowCount; mR++)
             {
                 for (int mC = 0; mC < columnCount; mC++)
                 {
                     var newButton = new Button();
                     newButton = (Button)CloneElement(GameTemplate);
+                    var gameID = Program.Games[game].gameID;
                     newButton.Name = "btnGameId_" + gameID;
                     var x = templateLeft + mC * (templateGameWidth + templateGameBorder);
                     var y = templateUp + mR * (templateGameHeight + templateGameBorder);
                     newButton.Margin = new Thickness(x, y, 0, 0);
-                    gamesMatrix.Add(new GamesMatrix(newButton.Name, mR, mC));
+                    Program.AddRowColumn(gameID, mR, mC);
 
                     listGames.Children.Add(newButton);
 
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Click;
                     newButton.GotFocus += btnGame_GotFocus;
-                    newButton.LostFocus += btnGame_GotFocus;
+                    newButton.LostFocus += btnGame_LostFocus;
 
                     newButton.Loaded += btnGame_Load;
 
-                    gameID++;
-                    if (gameID == Program.Games.Count) break;
+                    game++;
+                    if (game == Program.Games.Count) break;
                 }
             }
         }
 
-        GamesMatrix FindGameInMatrix(string name)
-        {
-            GamesMatrix gm = new GamesMatrix();
-            for (int i =0;i< gamesMatrix.Count; i++)
-            {
-                if (gamesMatrix[i].gameid == name)
-                {
-                    gm = gamesMatrix[i];
-                    break;
-                }
-            }
-            return gm;
-        }
+        private Vector lastFocusRC = new Vector();
 
         private void btnGame_LostFocus(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             string name = btn.Name;
+            lastFocusRC = GetGameRowColumn(btn);
         }
 
         private void btnGame_GotFocus(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             string name = btn.Name;
-
-            var game = FindGameInMatrix(name);
-            if (game.gameid == "null") return;
+            var gameID = GetGameID(btn);
 
             //Move Game List if game around next focus
 
@@ -374,14 +347,25 @@ namespace XboxDesktop
             var listRight = (int)listGames.Margin.Right;
             var listBottom = (int)listGames.Margin.Bottom;
 
-            if (gameBottom > borderGameListBottom && game.row < gamesMatrix.Count-1)
+            var maxRow = Program.Games[Program.Games.Count - 1].Row;
+            var actualRow = Program.Games[gameID].Row;
+            var lastFocusRow = (int)lastFocusRC.Y;
+
+            if (gameBottom > borderGameListBottom && actualRow == maxRow)
             {
                 listTop -= templateGameHeight;
                 listBottom -= templateGameHeight;
                 listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
             }
             else
-            if (gameTop < borderGameListTop && game.row > 0)
+            if (gameTop < borderGameListTop && Program.Games[gameID].Row > 0)
+            {
+                listTop += templateGameHeight;
+                listBottom += templateGameHeight;
+                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+            }
+            else
+            if (gameTop < borderGameListTop && actualRow == 0 && lastFocusRow == maxRow)
             {
                 listTop += templateGameHeight;
                 listBottom += templateGameHeight;
@@ -506,6 +490,21 @@ namespace XboxDesktop
             var image = VisualTreeHelper.GetChild(border, 0);
 
             return (Image) image;
+        }
+
+        private int GetGameID(Button btn) 
+        {
+            string name = btn.Name;
+            name = name.Replace("btnGameId_", "");
+            int id = Int32.Parse(name);
+            return id;
+        }
+
+        private Vector GetGameRowColumn(Button btn)
+        {
+            var g = Program.Games[GetGameID(btn)];
+            return g.RowColumn;
+
         }
 
         //======================Control============================

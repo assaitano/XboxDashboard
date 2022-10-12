@@ -12,23 +12,50 @@ using System.Diagnostics;
 using System.Windows.Interop;
 using System.Xml;
 using System.IO;
+using System.Windows;
+using System.Data.Common;
 
 namespace XboxDesktop
 {
     public class Program
     {
+
         public struct Game
         {
             public string Title;
             public string PosterURL;
             public string DiskLink;
+            public int gameID;
+            public Vector RowColumn;
+            public int Row {
+                get { return (int)this.RowColumn.Y; }
+            }
+            public int Column {
+                get { return (int)this.RowColumn.X; }
+            }
+
+            /*
+            public Game()
+            {
+                this.Title = "";
+                this.PosterURL = "";
+                this.DiskLink = "";
+                this.gameID = -1;
+                this.RowColumn = new Vector(-1, -1);
+            }*/
         }
 
-        public static List<Game> Games = new List<Game>();
-
-        static ButtonsConstants lastPressButton = ButtonsConstants.None;
+        public static void AddRowColumn(int id, int r, int c)
+        {
+            Vector vector = new Vector(c, r);
+            var g = Games[id];
+            g.RowColumn = vector;
+            Games[id] = g;
+        }
 
         //======================Gamepad============================
+
+        static ButtonsConstants lastPressButton = ButtonsConstants.None;
 
         private static void DellayDoublePressGamepadState(ButtonsConstants bState)
         {
@@ -113,8 +140,11 @@ namespace XboxDesktop
 
         //======================DB============================
 
+        public static List<Game> Games = new List<Game>();
+
         public static void LoadDB()
         {
+            int id = 0;
             foreach (string file in Directory.GetFiles("./DB/", "*.xml"))
             {
                 XmlDocument doc = new XmlDocument();
@@ -131,8 +161,12 @@ namespace XboxDesktop
                 //
                 node = doc.DocumentElement.SelectSingleNode("DiskLink");
                 game.DiskLink = node.InnerText;
-
+                //
+                game.gameID = id;
+                //
                 Games.Add(game);
+
+                id++;
             }
         }
 
