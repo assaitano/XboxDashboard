@@ -358,7 +358,7 @@ namespace XboxDesktop
                 listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
             }
             else
-            if (gameTop < borderGameListTop && Program.Games[gameID].Row > 0)
+            if (gameTop < borderGameListTop && actualRow > 0)
             {
                 listTop += templateGameHeight;
                 listBottom += templateGameHeight;
@@ -376,11 +376,8 @@ namespace XboxDesktop
         private void btnGame_Load(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
-            string name = btn.Name;
-            name = name.Replace("btnGameId_", "");
-            int id = Int32.Parse(name);
             var newButtonImage = GetButtonImage(btn);
-            newButtonImage.Source = Net.LoadImages(Program.Games[id].PosterURL);
+            newButtonImage.Source = Net.LoadImages(Program.Games[GetGameID(btn)].PosterURL);
         }
 
         private void btnGame_Click(object sender, RoutedEventArgs e)
@@ -504,7 +501,6 @@ namespace XboxDesktop
         {
             var g = Program.Games[GetGameID(btn)];
             return g.RowColumn;
-
         }
 
         //======================Control============================
