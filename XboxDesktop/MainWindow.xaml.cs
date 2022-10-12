@@ -31,7 +31,7 @@ using System.Windows.Automation;
 using Microsoft.Xaml.Behaviors.Core;
 using ModernWpf;
 using System.Windows.Media.Animation;
-using static XboxDesktop.Program;
+
 
 namespace XboxDesktop
 {
@@ -72,13 +72,6 @@ namespace XboxDesktop
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
-        private ReporterState reporterState = new ReporterState();
-        private Control[] controllerControls;
-        private Control[] stickControls;
-        private Point[] stickControlPositions;
-
-        List<NewsButton> newsButtons = new List<NewsButton>();
-        List<Button> btnNewsList = new List<Button>();
         String btnLastPress = "";
         MenuState menuState = MenuState.Desktop;
 
@@ -140,7 +133,7 @@ namespace XboxDesktop
         private void WindowLauncher(object sender, RoutedEventArgs e)
         {
             UpdateNews();
-            UpdateRenderGames();
+            UpdateRenderListGames();
         }
 
         private void UpdateRednderState()
@@ -164,7 +157,6 @@ namespace XboxDesktop
                     break;
             }
         }
-
 
         public void btnPress(object sender, RoutedEventArgs e)
         {
@@ -204,6 +196,9 @@ namespace XboxDesktop
         }
 
         //======================News============================
+
+        List<NewsButton> newsButtons = new List<NewsButton>();
+        List<Button> btnNewsList = new List<Button>();
 
         private void UpdateNews()
         {
@@ -251,6 +246,7 @@ namespace XboxDesktop
             }
         }
 
+        /*
         private void btnNews_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -264,33 +260,38 @@ namespace XboxDesktop
                 webBrowser.Address = newsButtons[id-1].postURL;
             }
         }
-
+        */
         //======================Games============================
 
-        /*
-        private void btnGames_Apps(object sender, RoutedEventArgs e)
-        {
-            menuState = MenuState.GameApp;
-            UpdateRednderState();
-        }
-        */
-        private void UpdateRenderGames()
+        int templateGameWidth = 305;
+        int templateGameHeight = 305;
+        int templateGameBorder = 3;
+
+        int borderGameListBottom = 1080;
+        int borderGameListTop = 258;
+
+        private void UpdateRenderListGames()
         {
             GameTemplate.Visibility = Visibility.Hidden;
 
-            int templateX = (int)GameTemplate.Margin.Left;
-            int templateY = (int)GameTemplate.Margin.Top;
-            int width = 305;
-            int height = 305;
-            int border = 3;
+            int templateLeft = (int)GameTemplate.Margin.Left;
+            int templateUp = (int)GameTemplate.Margin.Top;
 
             int columnCount = 4;
             int rowCount = 1;
             if (Program.Games.Count / columnCount > 0)
                 rowCount = Program.Games.Count / columnCount + Program.Games.Count % columnCount;
 
+            //Change Size Grid
+            var listLeft = (int)GameList.Margin.Left;
+            var listTop = (int)GameList.Margin.Top;
+            var listRight = (int)GameList.Margin.Right;
+            var listBottom = (int)GameList.Margin.Bottom;
+            var sizeListBottom = listBottom - (rowCount * (templateGameHeight + templateGameBorder));
+            GameList.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
+            
+            //Create Matrix
             int gameID = 0;
-
             for (int mR = 0; mR < rowCount; mR++)
             {
                 for (int mC = 0; mC < columnCount; mC++)
@@ -298,19 +299,60 @@ namespace XboxDesktop
                     var newButton = new Button();
                     newButton = (Button)CloneElement(GameTemplate);
                     newButton.Name = "btnGameId_" + gameID;
-                    var x = templateX + mC * (width + border);
-                    var y = templateY + mR * (height + border);
+                    var x = templateLeft + mC * (templateGameWidth + templateGameBorder);
+                    var y = templateUp + mR * (templateGameHeight + templateGameBorder);
                     newButton.Margin = new Thickness(x, y, 0, 0);
 
-                    GamesApps.Children.Add(newButton);
-                                       
+                    GameList.Children.Add(newButton);
+
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Click;
+                    newButton.GotFocus += btnGame_GotFocus;
+                    newButton.LostFocus += btnGame_GotFocus;
+
                     newButton.Loaded += btnGame_Load;
 
                     gameID++;
                     if (gameID == Program.Games.Count) break;
                 }
+            }
+        }
+
+        private void btnGame_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            string name = btn.Name;
+        }
+
+        private void btnGame_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            string name = btn.Name;
+
+            //Move Game List if game around next focus
+
+            MainWindow mainWindow = ((MainWindow)System.Windows.Application.Current.MainWindow);
+            var gameLeftTop = mainWindow.TranslatePoint(new Point(0, 0), btn);
+            var gameBottom = (int)gameLeftTop.Y * (-1) + templateGameHeight;
+            var gameTop = (int)gameLeftTop.Y * (-1) - templateGameHeight;
+
+            var listLeft = (int)GameList.Margin.Left;
+            var listTop = (int)GameList.Margin.Top;
+            var listRight = (int)GameList.Margin.Right;
+            var listBottom = (int)GameList.Margin.Bottom;
+
+            if (gameBottom > borderGameListBottom)
+            {
+                listTop -= templateGameHeight;
+                listBottom -= templateGameHeight;
+                GameList.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+            }
+            else
+            if (gameTop < borderGameListTop)
+            {
+                listTop += templateGameHeight;
+                listBottom += templateGameHeight;
+                GameList.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
             }
         }
 
@@ -432,6 +474,13 @@ namespace XboxDesktop
 
             return (Image) image;
         }
+
+        //======================Control============================
+
+        private ReporterState reporterState = new ReporterState();
+        private Control[] controllerControls;
+        private Control[] stickControls;
+        private Point[] stickControlPositions;
 
         private void checkGamePads()
         {

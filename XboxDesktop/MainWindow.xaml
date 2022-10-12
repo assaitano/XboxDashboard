@@ -24,7 +24,7 @@
 
     <Viewbox>
         <Grid x:Name="Dashboard" Height="1080" Width="1920">
-            <Grid x:Name="Desktop">
+            <Grid x:Name="Desktop" d:IsHidden="True">
                 <Image
                     x:Name="BackGround_png"
                     Stretch="Fill" Source="/Images/BackGround.png" >
@@ -57,7 +57,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Content="Button" Background="{x:Null}" 
-                    Style="{DynamicResource ButtonStyle}"/>
+                    Style="{DynamicResource ButtonStyle}" BorderThickness="4,4,4,4"/>
                 <Button
                     x:Name="button_Copy1"
                     Width="198"
@@ -144,9 +144,8 @@
                     Style="{DynamicResource ButtonStyle}"
                     Click="btnPress"/>
             </Grid>
-            <Grid x:Name="GamesApps" Background="#FF131313" d:IsHidden="True">
+            <Grid x:Name="GamesApps" Background="#FF131313">
 
-                <Grid Margin="532,180,56,0"/>
 
                 <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/Images/BackGroundApp.png" Stretch="Fill"/>
 
@@ -156,14 +155,17 @@
                 <Button x:Name="Groups_Copy" Content="Groups" Margin="0,376,1427,639" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy1" Content="Groups" Margin="0,441,1427,574" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy2" Content="Groups" Margin="0,520,1427,495" Background="{x:Null}" Height="65"/>
-                <Button
+                <Grid x:Name="GameList" Margin="560,258,125,495" Width="1235">
+                    <Button
                     x:Name="GameTemplate"
                     Width="305"
                     Height="308"
-                    Margin="565,264,0,0"
+                    Margin="6,6,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click"
                     Style="{DynamicResource ButtonGamesStyle}"/>
+                </Grid>
+                <Grid x:Name="TopBar" Margin="560,0,125,822" Background="#FF1F1F1F"/>
 
             </Grid>
             <Grid x:Name="WebBrowser" d:IsHidden="True">

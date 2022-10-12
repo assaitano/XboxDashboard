@@ -7,7 +7,8 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            
+
+            <Thickness x:Key="Button.BorderTriknes">4</Thickness>
             <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD" />
             <SolidColorBrush x:Key="Button.Static.Border" Color="Transparent" />
             <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD" />
@@ -19,7 +20,7 @@
             <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
             <Duration x:Key="Button.Press.Time">0:0:0.05</Duration>
 
-            <!--=====================================================-->
+            <!--===============Animation=====================================-->
 
             <Storyboard x:Key = "ButtonAnimation" Completed="btnAnimationEnd">
                 <ParallelTimeline>
@@ -64,7 +65,7 @@
                 </Setter>
 
                 <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
-                <Setter Property="BorderThickness" Value="4" />
+                <Setter Property="BorderThickness" Value="{StaticResource Button.BorderTriknes}" />
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="Padding" Value="1" />
@@ -140,7 +141,7 @@
                 </Setter>
 
                 <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
-                <Setter Property="BorderThickness" Value="4" />
+                <Setter Property="BorderThickness" Value="{StaticResource Button.BorderTriknes}" />
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
                 <Setter Property="Padding" Value="1" />
@@ -280,6 +281,7 @@
                     </EventTrigger>
                 </Style.Triggers>
             </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
