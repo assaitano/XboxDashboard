@@ -155,7 +155,7 @@
                 <Button x:Name="Groups_Copy" Content="Groups" Margin="0,376,1427,639" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy1" Content="Groups" Margin="0,441,1427,574" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy2" Content="Groups" Margin="0,520,1427,495" Background="{x:Null}" Height="65"/>
-                <Grid x:Name="GameList" Margin="560,258,125,495" Width="1235">
+                <Grid x:Name="listGames" Margin="560,258,125,495" Width="1235">
                     <Button
                     x:Name="GameTemplate"
                     Width="305"

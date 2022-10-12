@@ -263,6 +263,21 @@ namespace XboxDesktop
         */
         //======================Games============================
 
+        struct GamesMatrix
+        {
+            public string gameid = "null";
+            public int row = -1;
+            public int column = -1;
+
+            public GamesMatrix(string gameid,int row,int column)
+            {
+                this.gameid = gameid;
+                this.row = row;
+                this.column = column;
+            }
+        }
+        List<GamesMatrix> gamesMatrix = new List<GamesMatrix>();
+
         int templateGameWidth = 305;
         int templateGameHeight = 305;
         int templateGameBorder = 3;
@@ -283,12 +298,12 @@ namespace XboxDesktop
                 rowCount = Program.Games.Count / columnCount + Program.Games.Count % columnCount;
 
             //Change Size Grid
-            var listLeft = (int)GameList.Margin.Left;
-            var listTop = (int)GameList.Margin.Top;
-            var listRight = (int)GameList.Margin.Right;
-            var listBottom = (int)GameList.Margin.Bottom;
+            var listLeft = (int)listGames.Margin.Left;
+            var listTop = (int)listGames.Margin.Top;
+            var listRight = (int)listGames.Margin.Right;
+            var listBottom = (int)listGames.Margin.Bottom;
             var sizeListBottom = listBottom - (rowCount * (templateGameHeight + templateGameBorder));
-            GameList.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
+            listGames.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
             
             //Create Matrix
             int gameID = 0;
@@ -302,8 +317,9 @@ namespace XboxDesktop
                     var x = templateLeft + mC * (templateGameWidth + templateGameBorder);
                     var y = templateUp + mR * (templateGameHeight + templateGameBorder);
                     newButton.Margin = new Thickness(x, y, 0, 0);
+                    gamesMatrix.Add(new GamesMatrix(newButton.Name, mR, mC));
 
-                    GameList.Children.Add(newButton);
+                    listGames.Children.Add(newButton);
 
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Click;
@@ -318,6 +334,20 @@ namespace XboxDesktop
             }
         }
 
+        GamesMatrix FindGameInMatrix(string name)
+        {
+            GamesMatrix gm = new GamesMatrix();
+            for (int i =0;i< gamesMatrix.Count; i++)
+            {
+                if (gamesMatrix[i].gameid == name)
+                {
+                    gm = gamesMatrix[i];
+                    break;
+                }
+            }
+            return gm;
+        }
+
         private void btnGame_LostFocus(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -329,6 +359,9 @@ namespace XboxDesktop
             Button btn = sender as Button;
             string name = btn.Name;
 
+            var game = FindGameInMatrix(name);
+            if (game.gameid == "null") return;
+
             //Move Game List if game around next focus
 
             MainWindow mainWindow = ((MainWindow)System.Windows.Application.Current.MainWindow);
@@ -336,23 +369,23 @@ namespace XboxDesktop
             var gameBottom = (int)gameLeftTop.Y * (-1) + templateGameHeight;
             var gameTop = (int)gameLeftTop.Y * (-1) - templateGameHeight;
 
-            var listLeft = (int)GameList.Margin.Left;
-            var listTop = (int)GameList.Margin.Top;
-            var listRight = (int)GameList.Margin.Right;
-            var listBottom = (int)GameList.Margin.Bottom;
+            var listLeft = (int)listGames.Margin.Left;
+            var listTop = (int)listGames.Margin.Top;
+            var listRight = (int)listGames.Margin.Right;
+            var listBottom = (int)listGames.Margin.Bottom;
 
-            if (gameBottom > borderGameListBottom)
+            if (gameBottom > borderGameListBottom && game.row < gamesMatrix.Count-1)
             {
                 listTop -= templateGameHeight;
                 listBottom -= templateGameHeight;
-                GameList.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
             }
             else
-            if (gameTop < borderGameListTop)
+            if (gameTop < borderGameListTop && game.row > 0)
             {
                 listTop += templateGameHeight;
                 listBottom += templateGameHeight;
-                GameList.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
             }
         }
 
