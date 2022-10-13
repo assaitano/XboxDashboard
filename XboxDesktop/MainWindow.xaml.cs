@@ -329,10 +329,10 @@ namespace XboxDesktop
             Button btn = sender as Button;
             string name = btn.Name;
 
-            SlideListGames(btn);
+            SlideSwapListGames(btn);
         }
 
-        private void SlideListGames(Button btn)
+        private void SlideSwapListGames(Button btn)
         {
             var gameID = GetGameID(btn);
 
@@ -352,6 +352,7 @@ namespace XboxDesktop
 
             if (gameBottom > borderGameListBottom && actualRow == maxRow)
             {
+                
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
                 thicknessAnimation.To = new Thickness(listLeft, listTop - templateGameHeight, listRight, listBottom - templateGameHeight);
@@ -361,13 +362,14 @@ namespace XboxDesktop
                 parallelTimeline.Children.Add(thicknessAnimation);
                 storyboard.Children.Add(parallelTimeline);
                 storyboard.Completed += AnimationEnd;
-
+                
                 App.PlayAnimation = true;
                 listGames.BeginStoryboard(storyboard);
             }
             else
             if (gameTop < borderGameListTop && actualRow >= 0 && lastFocusRow != maxRow)
             {
+                
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
                 thicknessAnimation.To = new Thickness(listLeft, listTop + templateGameHeight, listRight, listBottom + templateGameHeight);
@@ -383,7 +385,8 @@ namespace XboxDesktop
             }
             else
             if (gameTop < borderGameListTop && actualRow == 0 && lastFocusRow == maxRow)
-            { 
+            {
+                
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
                 thicknessAnimation.To = new Thickness(listLeft, startListTop, listRight, startListBottom);

@@ -19,9 +19,10 @@
             <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
             <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
             <Duration x:Key="Button.Press.Time">0:0:0.05</Duration>
-
+            
+            
             <Duration x:Key="Scroll.Time">0:0:0.1</Duration>
-
+            <Thickness x:Key="{x:Static local:App.Scroll_toPosition}"/>
             <!--===============Animation=====================================-->
 
             <Storyboard x:Key = "ButtonAnimation" Completed="btnAnimationEnd">
@@ -44,6 +45,21 @@
                     />
                     <ThicknessAnimation
                         Storyboard.TargetProperty="Margin" By="4,4,0,0" Duration="{StaticResource Button.Press.Time}" AutoReverse="True"
+                     />
+                </ParallelTimeline>
+            </Storyboard>
+
+            <Storyboard x:Key = "ListGameAnimationScrollDown" Completed="AnimationEnd">
+                <ParallelTimeline>
+                    <ThicknessAnimation 
+                        Storyboard.TargetProperty="Margin" To="{StaticResource Scroll.toPosition}" Duration="{StaticResource Scroll.Time}" AutoReverse="False"
+                     />
+                </ParallelTimeline>
+            </Storyboard>
+            <Storyboard x:Key = "ListGameAnimationScroll" Completed="AnimationEnd">
+                <ParallelTimeline>
+                    <ThicknessAnimation 
+                        Storyboard.TargetProperty="Margin" To="{StaticResource {x:Static local:App.Scroll_toPosition}}" Duration="{StaticResource Scroll.Time}" AutoReverse="False"
                      />
                 </ParallelTimeline>
             </Storyboard>

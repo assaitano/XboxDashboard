@@ -29,5 +29,8 @@ namespace XboxDesktop
         {
             PlayAnimation = false;
         }
+
+        public static Thickness Scroll_toPosition = new Thickness(0, 0, 0, 0); 
+
     }
 }
