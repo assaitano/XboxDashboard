@@ -20,7 +20,14 @@ namespace XboxDesktop
     {
         private void btnAnimationEnd(object sender, EventArgs e)
         {         
-            ((MainWindow)System.Windows.Application.Current.MainWindow).btnPressEnd();
+            ((MainWindow)System.Windows.Application.Current.MainWindow).btn_PressEnd();
+        }
+
+        public static bool PlayAnimation = false;
+
+        public void AnimationEnd(object sender, EventArgs e)
+        {
+            PlayAnimation = false;
         }
     }
 }

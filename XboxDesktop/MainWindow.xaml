@@ -103,7 +103,7 @@
                     VerticalAlignment="Top"
                     Background="{x:Null}"
                     Style="{DynamicResource ButtonLibriary}"
-                    Click="btnPress" >
+                    Click="btn_Press" >
                     <Grid Width="390" Height="215">
                         <Border BorderBrush="Black" Height="215" Width="390">
                             <Border.Background>
@@ -124,7 +124,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" Background="{x:Null}" 
                     Style="{DynamicResource ButtonStyle}"
-                    Click="btnPress"/>
+                    Click="btn_Press"/>
                 <Button
                     x:Name="btnNews2"
                     Width="415"
@@ -133,7 +133,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" Background="{x:Null}"
                     Style="{DynamicResource ButtonStyle}"
-                    Click="btnPress"/>
+                    Click="btn_Press"/>
                 <Button
                     x:Name="btnNews3"
                     Width="415"
@@ -142,7 +142,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top" Background="{x:Null}"
                     Style="{DynamicResource ButtonStyle}"
-                    Click="btnPress"/>
+                    Click="btn_Press"/>
             </Grid>
             <Grid x:Name="GamesApps" Background="#FF131313">
 
@@ -162,7 +162,7 @@
                     Height="308"
                     Margin="6,6,0,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Click"
+                    VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Press"
                     Style="{DynamicResource ButtonGamesStyle}"/>
                 </Grid>
                 <Grid x:Name="TopBar" Margin="560,0,125,822" Background="#FF1F1F1F"/>

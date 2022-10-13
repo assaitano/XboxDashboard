@@ -158,13 +158,13 @@ namespace XboxDesktop
             }
         }
 
-        public void btnPress(object sender, RoutedEventArgs e)
+        public void btn_Press(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             btnLastPress = btn.Name;
         }
 
-        public void btnPressEnd()
+        public void btn_PressEnd()
         {
             if (btnLastPress == "") return;
             
@@ -193,6 +193,11 @@ namespace XboxDesktop
             }
 
             btnLastPress = "";
+        }
+
+        public void AnimationEnd(object sender, EventArgs e)
+        {
+            App.PlayAnimation = false;
         }
 
         //======================News============================
@@ -246,21 +251,6 @@ namespace XboxDesktop
             }
         }
 
-        /*
-        private void btnNews_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            string name = btn.Name;
-            name = name.Replace("btnNews", "");
-            int id = Int32.Parse(name);
-            if (id > 0)
-            {
-                menuState = MenuState.WebBrowser;
-                UpdateRednderState();
-                webBrowser.Address = newsButtons[id-1].postURL;
-            }
-        }
-        */
         //======================Games============================
 
         int templateGameWidth = 305;
@@ -269,6 +259,9 @@ namespace XboxDesktop
 
         int borderGameListBottom = 1080;
         int borderGameListTop = 258;
+
+        int startListTop = -1;
+        int startListBottom = -1;
 
         private void UpdateRenderListGames()
         {
@@ -289,7 +282,9 @@ namespace XboxDesktop
             var listBottom = (int)listGames.Margin.Bottom;
             var sizeListBottom = listBottom - (rowCount * (templateGameHeight + templateGameBorder));
             listGames.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
-            
+            startListTop = listTop;
+            startListBottom = sizeListBottom;
+
             //Create Grid Data
             int game = 0;
             for (int mR = 0; mR < rowCount; mR++)
@@ -308,7 +303,7 @@ namespace XboxDesktop
                     listGames.Children.Add(newButton);
 
                     newButton.Visibility = Visibility.Visible;
-                    newButton.Click += btnGame_Click;
+                    newButton.Click += btnGame_Press;
                     newButton.GotFocus += btnGame_GotFocus;
                     newButton.LostFocus += btnGame_LostFocus;
 
@@ -333,14 +328,18 @@ namespace XboxDesktop
         {
             Button btn = sender as Button;
             string name = btn.Name;
-            var gameID = GetGameID(btn);
 
-            //Move Game List if game around next focus
+            SlideListGames(btn);
+        }
+
+        private void SlideListGames(Button btn)
+        {
+            var gameID = GetGameID(btn);
 
             MainWindow mainWindow = ((MainWindow)System.Windows.Application.Current.MainWindow);
             var gameLeftTop = mainWindow.TranslatePoint(new Point(0, 0), btn);
             var gameBottom = (int)gameLeftTop.Y * (-1) + templateGameHeight;
-            var gameTop = (int)gameLeftTop.Y * (-1) - templateGameHeight;
+            var gameTop = (int)gameLeftTop.Y * (-1);
 
             var listLeft = (int)listGames.Margin.Left;
             var listTop = (int)listGames.Margin.Top;
@@ -353,23 +352,50 @@ namespace XboxDesktop
 
             if (gameBottom > borderGameListBottom && actualRow == maxRow)
             {
-                listTop -= templateGameHeight;
-                listBottom -= templateGameHeight;
-                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+                Storyboard storyboard = new Storyboard();
+                ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+                thicknessAnimation.To = new Thickness(listLeft, listTop - templateGameHeight, listRight, listBottom - templateGameHeight);
+                thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));  
+                Storyboard.SetTargetProperty(thicknessAnimation,new PropertyPath(Grid.MarginProperty));
+                ParallelTimeline parallelTimeline = new ParallelTimeline();
+                parallelTimeline.Children.Add(thicknessAnimation);
+                storyboard.Children.Add(parallelTimeline);
+                storyboard.Completed += AnimationEnd;
+
+                App.PlayAnimation = true;
+                listGames.BeginStoryboard(storyboard);
             }
             else
-            if (gameTop < borderGameListTop && actualRow > 0)
+            if (gameTop < borderGameListTop && actualRow >= 0 && lastFocusRow != maxRow)
             {
-                listTop += templateGameHeight;
-                listBottom += templateGameHeight;
-                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+                Storyboard storyboard = new Storyboard();
+                ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+                thicknessAnimation.To = new Thickness(listLeft, listTop + templateGameHeight, listRight, listBottom + templateGameHeight);
+                thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));
+                Storyboard.SetTargetProperty(thicknessAnimation,new PropertyPath(Grid.MarginProperty));
+                ParallelTimeline parallelTimeline = new ParallelTimeline();
+                parallelTimeline.Children.Add(thicknessAnimation);
+                storyboard.Children.Add(parallelTimeline);
+                storyboard.Completed += AnimationEnd;
+                
+                App.PlayAnimation = true;
+                listGames.BeginStoryboard(storyboard);
             }
             else
             if (gameTop < borderGameListTop && actualRow == 0 && lastFocusRow == maxRow)
-            {
-                listTop += templateGameHeight;
-                listBottom += templateGameHeight;
-                listGames.Margin = new Thickness(listLeft, listTop, listRight, listBottom);
+            { 
+                Storyboard storyboard = new Storyboard();
+                ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+                thicknessAnimation.To = new Thickness(listLeft, startListTop, listRight, startListBottom);
+                thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));
+                Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(Grid.MarginProperty));
+                ParallelTimeline parallelTimeline = new ParallelTimeline();
+                parallelTimeline.Children.Add(thicknessAnimation);
+                storyboard.Children.Add(parallelTimeline);
+                storyboard.Completed += AnimationEnd;
+                
+                App.PlayAnimation = true;
+                listGames.BeginStoryboard(storyboard);
             }
         }
 
@@ -380,8 +406,9 @@ namespace XboxDesktop
             newButtonImage.Source = Net.LoadImages(Program.Games[GetGameID(btn)].PosterURL);
         }
 
-        private void btnGame_Click(object sender, RoutedEventArgs e)
+        private void btnGame_Press(object sender, RoutedEventArgs e)
         {
+            if (App.PlayAnimation) return;
 
             Button btn = sender as Button;
             string name = btn.Name;
@@ -683,6 +710,7 @@ namespace XboxDesktop
 
         private void MoveFocusGPad(ButtonsConstants button)
         {
+            if (!App.PlayAnimation)
             switch (button)
             {
                 case ButtonsConstants.DPadRight:
@@ -719,6 +747,7 @@ namespace XboxDesktop
 
         private void HandleKey(object sender, KeyEventArgs e)
         {
+            if (!App.PlayAnimation)
             if (e.Key == Key.Escape)
             {
                 menuState = MenuState.Desktop;

@@ -20,6 +20,8 @@
             <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
             <Duration x:Key="Button.Press.Time">0:0:0.05</Duration>
 
+            <Duration x:Key="Scroll.Time">0:0:0.1</Duration>
+
             <!--===============Animation=====================================-->
 
             <Storyboard x:Key = "ButtonAnimation" Completed="btnAnimationEnd">
