@@ -144,7 +144,7 @@
                     Style="{DynamicResource ButtonStyle}"
                     Click="btn_Press"/>
             </Grid>
-            <Grid x:Name="GamesApps" Background="#FF131313">
+            <Grid x:Name="Libriary" Background="#FF131313">
                 <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/Images/BackGroundApp.png" Stretch="Fill"/>
                 <Button x:Name="Games" Content="Games" Margin="0,154,1427,861" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Apps" Content="Apps" Margin="0,219,1427,796" Background="{x:Null}" Height="65"/>
@@ -152,7 +152,7 @@
                 <Button x:Name="Groups_Copy" Content="Groups" Margin="0,376,1427,639" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy1" Content="Groups" Margin="0,441,1427,574" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Groups_Copy2" Content="Groups" Margin="0,520,1427,495" Background="{x:Null}" Height="65"/>
-                <Grid x:Name="listGames" Margin="560,258,125,495" Width="1235">
+                <Grid x:Name="renderLibriary" Margin="560,258,125,495" Width="1235">
                     <Button
                     x:Name="GameTemplate"
                     Width="305"
@@ -162,7 +162,11 @@
                     VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Press"
                     Style="{DynamicResource ButtonGamesStyle}"/>
                 </Grid>
-                <Grid x:Name="TopBar" Margin="560,0,125,822" Background="#FF1F1F1F"/>
+                <Grid x:Name="libTopBar" Margin="560,0,125,822" Background="#FF1F1F1F"/>
+                <Grid x:Name="libBottomBar" Margin="560,930,125,-2" Background="#FF1F1F1F" Height="150">
+                    <Label x:Name="Looking_for_more" Content="Looking for more?" HorizontalAlignment="Left" VerticalAlignment="Top" Width="315" Height="53" Foreground="#FFFEFEFE" Padding="0,0,0,0" FontSize="36" FontWeight="Bold" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="Browse_the_store" Content="Browse the Store" HorizontalAlignment="Left" Margin="6,68,0,0" VerticalAlignment="Top" Height="60" Width="251" Foreground="#FFCACACA" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}"/>
+                </Grid>
             </Grid>
             <Grid x:Name="WebBrowser" d:IsHidden="True">
                 <wpf:ChromiumWebBrowser x:Name="webBrowser"/>

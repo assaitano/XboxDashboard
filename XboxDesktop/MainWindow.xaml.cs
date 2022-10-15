@@ -76,10 +76,13 @@ namespace XboxDesktop
         MenuState menuState = MenuState.Desktop;
 
         private DispatcherTimer clock;
+        public MainWindow mainWindow;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            mainWindow = ((MainWindow)System.Windows.Application.Current.MainWindow);
 
             Program.LoadDB();
 
@@ -133,7 +136,7 @@ namespace XboxDesktop
         private void WindowLauncher(object sender, RoutedEventArgs e)
         {
             UpdateNews();
-            UpdateRenderListGames();
+            UpdateRenderLibriary();
         }
 
         private void UpdateRednderState()
@@ -143,16 +146,16 @@ namespace XboxDesktop
                 case MenuState.Desktop:
                     Desktop.Visibility = Visibility.Visible;
                     WebBrowser.Visibility = Visibility.Hidden;
-                    GamesApps.Visibility = Visibility.Hidden;
+                    Libriary.Visibility = Visibility.Hidden;
                     break;
                 case MenuState.Libriary:
                     Desktop.Visibility = Visibility.Hidden;
-                    GamesApps.Visibility = Visibility.Visible;
+                    Libriary.Visibility = Visibility.Visible;
                     WebBrowser.Visibility = Visibility.Hidden;
                     break;
                 case MenuState.WebBrowser:
                     Desktop.Visibility = Visibility.Hidden;
-                    GamesApps.Visibility = Visibility.Hidden;
+                    Libriary.Visibility = Visibility.Hidden;
                     WebBrowser.Visibility = Visibility.Visible;
                     break;
             }
@@ -253,17 +256,24 @@ namespace XboxDesktop
 
         //======================Games============================
 
+
         int templateGameWidth = 305;
         int templateGameHeight = 305;
         int templateGameBorder = 3;
 
-        int borderGameListBottom = 1080;
-        int borderGameListTop = 258;
+        int borderLibriaryTop = 258;
+        int borderLibriaryBottom = 1080;
 
-        int startListTop = -1;
-        int startListBottom = -1;
+        int startLibriaryGlobalTop;
+        int actualLibriaryGlobalTop;
+        int actualLibriarybHeight;
 
-        private void UpdateRenderListGames()
+        int borderLibriaryBottomBar = 930;
+
+        int startLibTop = -1;
+        int startLibBottom = -1;
+
+        private void UpdateRenderLibriary()
         {
             GameTemplate.Visibility = Visibility.Hidden;
 
@@ -275,15 +285,21 @@ namespace XboxDesktop
             if (Program.Games.Count / columnCount > 0)
                 rowCount = Program.Games.Count / columnCount + Program.Games.Count % columnCount;
 
+
             //Change Size Grid
-            var listLeft = (int)listGames.Margin.Left;
-            var listTop = (int)listGames.Margin.Top;
-            var listRight = (int)listGames.Margin.Right;
-            var listBottom = (int)listGames.Margin.Bottom;
-            var sizeListBottom = listBottom - (rowCount * (templateGameHeight + templateGameBorder));
-            listGames.Margin = new Thickness(listLeft, listTop, listRight, sizeListBottom);
-            startListTop = listTop;
-            startListBottom = sizeListBottom;
+            var libLeft = (int)renderLibriary.Margin.Left;
+            var libTop = (int)renderLibriary.Margin.Top;
+            var libRight = (int)renderLibriary.Margin.Right;
+            var libBottom = (int)renderLibriary.Margin.Bottom;
+            var sizeLibBottom = libBottom - (rowCount * (templateGameHeight + templateGameBorder));
+            renderLibriary.Margin = new Thickness(libLeft, libTop, libRight, sizeLibBottom);
+            startLibTop = libTop;
+            startLibBottom = sizeLibBottom;
+
+            startLibriaryGlobalTop = Math.Abs((int)(mainWindow.TranslatePoint(new Point(0, 0), renderLibriary).Y));
+            actualLibriaryGlobalTop = startLibriaryGlobalTop;
+            actualLibriarybHeight = rowCount * (templateGameHeight + templateGameBorder);
+            checkRenderBottomBar();
 
             //Create Grid Data
             int game = 0;
@@ -300,14 +316,13 @@ namespace XboxDesktop
                     newButton.Margin = new Thickness(x, y, 0, 0);
                     Program.AddRowColumn(gameID, mR, mC);
 
-                    listGames.Children.Add(newButton);
+                    renderLibriary.Children.Add(newButton);
 
                     newButton.Visibility = Visibility.Visible;
                     newButton.Click += btnGame_Press;
                     newButton.GotFocus += btnGame_GotFocus;
                     newButton.LostFocus += btnGame_LostFocus;
-
-                    newButton.Loaded += btnGame_Load;
+                    newButton.Loaded += btnGame_LoadContent;
 
                     game++;
                     if (game == Program.Games.Count) break;
@@ -329,33 +344,32 @@ namespace XboxDesktop
             Button btn = sender as Button;
             string name = btn.Name;
 
-            SlideSwapListGames(btn);
+            SlideLibriary(btn);
         }
 
-        private void SlideSwapListGames(Button btn)
+        private void SlideLibriary(Button btn)
         {
             var gameID = GetGameID(btn);
 
-            MainWindow mainWindow = ((MainWindow)System.Windows.Application.Current.MainWindow);
             var gameLeftTop = mainWindow.TranslatePoint(new Point(0, 0), btn);
-            var gameBottom = (int)gameLeftTop.Y * (-1) + templateGameHeight;
-            var gameTop = (int)gameLeftTop.Y * (-1);
+            var gameBottom = Math.Abs((int)gameLeftTop.Y) + templateGameHeight;
+            var gameTop = Math.Abs((int)gameLeftTop.Y);
 
-            var listLeft = (int)listGames.Margin.Left;
-            var listTop = (int)listGames.Margin.Top;
-            var listRight = (int)listGames.Margin.Right;
-            var listBottom = (int)listGames.Margin.Bottom;
+            var libLeft = (int)renderLibriary.Margin.Left;
+            var libTop = (int)renderLibriary.Margin.Top;
+            var libRight = (int)renderLibriary.Margin.Right;
+            var libBottom = (int)renderLibriary.Margin.Bottom;
 
             var maxRow = Program.Games[Program.Games.Count - 1].Row;
             var actualRow = Program.Games[gameID].Row;
             var lastFocusRow = (int)lastFocusRC.Y;
 
-            if (gameBottom > borderGameListBottom && actualRow == maxRow)
+            if (gameBottom > borderLibriaryBottom && actualRow == maxRow)
             {
                 
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
-                thicknessAnimation.To = new Thickness(listLeft, listTop - templateGameHeight, listRight, listBottom - templateGameHeight);
+                thicknessAnimation.To = new Thickness(libLeft, libTop - templateGameHeight, libRight, libBottom - templateGameHeight);
                 thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));  
                 Storyboard.SetTargetProperty(thicknessAnimation,new PropertyPath(Grid.MarginProperty));
                 ParallelTimeline parallelTimeline = new ParallelTimeline();
@@ -364,15 +378,18 @@ namespace XboxDesktop
                 storyboard.Completed += AnimationEnd;
                 
                 App.PlayAnimation = true;
-                listGames.BeginStoryboard(storyboard);
+                renderLibriary.BeginStoryboard(storyboard);
+
+                actualLibriaryGlobalTop -= templateGameHeight;
+                checkRenderBottomBar();
             }
             else
-            if (gameTop < borderGameListTop && actualRow >= 0 && lastFocusRow != maxRow)
+            if (gameTop < borderLibriaryTop && actualRow >= 0 && lastFocusRow != maxRow)
             {
                 
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
-                thicknessAnimation.To = new Thickness(listLeft, listTop + templateGameHeight, listRight, listBottom + templateGameHeight);
+                thicknessAnimation.To = new Thickness(libLeft, libTop + templateGameHeight, libRight, libBottom + templateGameHeight);
                 thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));
                 Storyboard.SetTargetProperty(thicknessAnimation,new PropertyPath(Grid.MarginProperty));
                 ParallelTimeline parallelTimeline = new ParallelTimeline();
@@ -381,15 +398,18 @@ namespace XboxDesktop
                 storyboard.Completed += AnimationEnd;
                 
                 App.PlayAnimation = true;
-                listGames.BeginStoryboard(storyboard);
+                renderLibriary.BeginStoryboard(storyboard);
+
+                actualLibriaryGlobalTop += templateGameHeight;
+                checkRenderBottomBar();
             }
             else
-            if (gameTop < borderGameListTop && actualRow == 0 && lastFocusRow == maxRow)
+            if (gameTop < borderLibriaryTop && actualRow == 0 && lastFocusRow == maxRow)
             {
                 
                 Storyboard storyboard = new Storyboard();
                 ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
-                thicknessAnimation.To = new Thickness(listLeft, startListTop, listRight, startListBottom);
+                thicknessAnimation.To = new Thickness(libLeft, startLibTop, libRight, startLibBottom);
                 thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.1));
                 Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath(Grid.MarginProperty));
                 ParallelTimeline parallelTimeline = new ParallelTimeline();
@@ -398,11 +418,23 @@ namespace XboxDesktop
                 storyboard.Completed += AnimationEnd;
                 
                 App.PlayAnimation = true;
-                listGames.BeginStoryboard(storyboard);
+                renderLibriary.BeginStoryboard(storyboard);
+
+                actualLibriaryGlobalTop = startLibriaryGlobalTop;
+                checkRenderBottomBar();
             }
         }
 
-        private void btnGame_Load(object sender, RoutedEventArgs e)
+        private void checkRenderBottomBar()
+        {
+            var libriaryBottom = actualLibriaryGlobalTop + actualLibriarybHeight;
+            if (libriaryBottom < borderLibriaryBottomBar)
+                libBottomBar.Visibility = Visibility.Visible;
+            else
+                libBottomBar.Visibility = Visibility.Hidden;
+        } 
+
+        private void btnGame_LoadContent(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
             var newButtonImage = GetButtonImage(btn);

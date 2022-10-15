@@ -49,21 +49,6 @@
                 </ParallelTimeline>
             </Storyboard>
 
-            <Storyboard x:Key = "ListGameAnimationScrollDown" Completed="AnimationEnd">
-                <ParallelTimeline>
-                    <ThicknessAnimation 
-                        Storyboard.TargetProperty="Margin" To="{StaticResource Scroll.toPosition}" Duration="{StaticResource Scroll.Time}" AutoReverse="False"
-                     />
-                </ParallelTimeline>
-            </Storyboard>
-            <Storyboard x:Key = "ListGameAnimationScroll" Completed="AnimationEnd">
-                <ParallelTimeline>
-                    <ThicknessAnimation 
-                        Storyboard.TargetProperty="Margin" To="{StaticResource {x:Static local:App.Scroll_toPosition}}" Duration="{StaticResource Scroll.Time}" AutoReverse="False"
-                     />
-                </ParallelTimeline>
-            </Storyboard>
-
             <!--===============Default=====================================-->
 
             <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
