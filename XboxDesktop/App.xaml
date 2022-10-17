@@ -7,7 +7,6 @@
 
     <Application.Resources>
         <ResourceDictionary>
-
             <Thickness x:Key="Button.BorderTriknes">4</Thickness>
             <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD" />
             <SolidColorBrush x:Key="Button.Static.Border" Color="Transparent" />
@@ -20,9 +19,10 @@
             <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
             <Duration x:Key="Button.Press.Time">0:0:0.05</Duration>
             
-            
             <Duration x:Key="Scroll.Time">0:0:0.1</Duration>
-            <Thickness x:Key="{x:Static local:App.Scroll_toPosition}"/>
+
+            <SolidColorBrush x:Key="Button.Text.Color" Color="#FFCACACA" />
+
             <!--===============Animation=====================================-->
 
             <Storyboard x:Key = "ButtonAnimation" Completed="btnAnimationEnd">
@@ -285,6 +285,36 @@
                 </Style.Triggers>
             </Style>
 
+            <!--===============Icon=====================================-->
+
+            <DrawingImage x:Key="Bell">
+                <DrawingImage.Drawing>
+                    <DrawingGroup Opacity="1">
+                        <DrawingGroup.Children>
+                            <DrawingGroup Opacity="1">
+                                <DrawingGroup.Children>
+                                    <DrawingGroup Opacity="1">
+                                        <DrawingGroup.Children>
+                                            <GeometryDrawing Brush="{StaticResource Button.Text.Color}" Pen="{x:Null}">
+                                                <GeometryDrawing.Geometry>
+                                                    <PathGeometry FillRule="Nonzero" 
+                                                                  Figures="M160 840 c-11 -11 -20 -28 -20 -38 0 -10 54 -97 120 -193 l120 -174
+0 -147 c0 -180 4 -188 100 -188 96 0 100 8 100 188 l0 147 120 174 c66 96 120
+183 120 193 0 10 -9 27 -20 38 -19 19 -33 20 -320 20 -287 0 -301 -1 -320 -20z
+m614 -40 c-1 -9 -52 -90 -115 -180 l-114 -165 -5 -155 -5 -155 -55 0 -55 0 -5
+155 -5 155 -111 160 c-132 191 -127 182 -119 195 4 7 109 9 298 8 255 -3 292
+-5 291 -18z"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup.Children>
+                                    </DrawingGroup> 
+                                </DrawingGroup.Children>
+                            </DrawingGroup>
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

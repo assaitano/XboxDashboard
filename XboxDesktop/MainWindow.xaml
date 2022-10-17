@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:XboxDesktop"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:ui="http://schemas.modernwpf.com/2019" xmlns:controls="clr-namespace:ModernWpf.Controls;assembly=ModernWpf"
     Title="MainWindow"
     Width="1920"
     Height="1080"
@@ -144,7 +144,7 @@
                     Style="{DynamicResource ButtonStyle}"
                     Click="btn_Press"/>
             </Grid>
-            <Grid x:Name="Libriary" Background="#FF131313">
+            <Grid x:Name="Libriary" Background="#FF1F1F1F">
                 <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/Images/BackGroundApp.png" Stretch="Fill"/>
                 <Button x:Name="Games" Content="Games" Margin="0,154,1427,861" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Apps" Content="Apps" Margin="0,219,1427,796" Background="{x:Null}" Height="65"/>
@@ -162,10 +162,27 @@
                     VerticalAlignment="Top" Background="{x:Null}" Click="btnGame_Press"
                     Style="{DynamicResource ButtonGamesStyle}"/>
                 </Grid>
-                <Grid x:Name="libTopBar" Margin="560,0,125,822" Background="#FF1F1F1F"/>
+                <Grid x:Name="libTopBar" Margin="560,0,125,822" Background="#FF1F1F1F">
+                    <Button x:Name="btnLibSort" HorizontalAlignment="Left" Margin="773,154,0,0" VerticalAlignment="Top" Height="65" Width="150" Foreground="#FFCACACA" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}">
+                        <Image Source="{StaticResource Bell}" RenderTransformOrigin="0.5,0.5" Height="26" Width="21" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="179.884"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Button x:Name="btnLibSearch" HorizontalAlignment="Left" Margin="925,154,0,0" VerticalAlignment="Top" Height="65" Width="150" Foreground="{StaticResource Button.Text.Color}" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}">
+                        <controls:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF78B;" FontSize="26"/>
+                    </Button>
+                    <Button x:Name="btnLibNull" Content="Null" HorizontalAlignment="Left" Margin="1077,154,0,0" VerticalAlignment="Top" Height="65" Width="150" Foreground="{StaticResource Button.Text.Color}" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}"/>
+                </Grid>
                 <Grid x:Name="libBottomBar" Margin="560,930,125,-2" Background="#FF1F1F1F" Height="150">
                     <Label x:Name="Looking_for_more" Content="Looking for more?" HorizontalAlignment="Left" VerticalAlignment="Top" Width="315" Height="53" Foreground="#FFFEFEFE" Padding="0,0,0,0" FontSize="36" FontWeight="Bold" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                    <Button x:Name="Browse_the_store" Content="Browse the Store" HorizontalAlignment="Left" Margin="6,68,0,0" VerticalAlignment="Top" Height="60" Width="251" Foreground="#FFCACACA" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}"/>
+                    <Button x:Name="btnBrowseStore" Content="Browse the Store" HorizontalAlignment="Left" Margin="6,68,0,0" VerticalAlignment="Top" Height="60" Width="251" Foreground="#FFCACACA" Background="#FF303030" FontSize="23" BorderBrush="{x:Null}"/>
                 </Grid>
             </Grid>
             <Grid x:Name="WebBrowser" d:IsHidden="True">

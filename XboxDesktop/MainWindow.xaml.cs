@@ -789,5 +789,7 @@ namespace XboxDesktop
                 UpdateRednderState();
             }
         }
+
+        
     }
 }
