@@ -141,11 +141,18 @@ namespace XboxDesktop
         //======================DB============================
 
         public static List<Game> Games = new List<Game>();
+        public static String PathDB = "/DB/";
 
         public static void LoadDB()
         {
             int id = 0;
-            foreach (string file in Directory.GetFiles("./DB/", "*.xml"))
+            //
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
+            PathDB = projectDirectory + PathDB;
+            //
+
+            foreach (string file in Directory.GetFiles(PathDB, "*.xml"))
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(file);
