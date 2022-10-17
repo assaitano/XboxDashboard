@@ -24,7 +24,7 @@
 
     <Viewbox>
         <Grid x:Name="Dashboard" Height="1080" Width="1920">
-            <Grid x:Name="Desktop" d:IsHidden="True">
+            <Grid x:Name="Desktop">
                 <Image
                     x:Name="BackGround_png"
                     Stretch="Fill" Source="/Images/BackGround.png" >
@@ -39,16 +39,8 @@
                     Margin="98,259,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Style="{DynamicResource ButtonStyle}" Background="{x:Null}"
+                    Style="{DynamicResource ButtonStyle}" Background="{x:Null}" d:IsHidden="True"
                    />
-                <Button
-                    x:Name="button"
-                    Width="197"
-                    Height="204"
-                    Margin="536,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center" Background="{x:Null}"
-                    Style="{DynamicResource ButtonStyle}"/>
                 <Button
                     x:Name="button_Copy"
                     Width="197"
@@ -57,7 +49,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Content="Button" Background="{x:Null}" 
-                    Style="{DynamicResource ButtonStyle}" BorderThickness="4,4,4,4"/>
+                    Style="{DynamicResource ButtonStyle}" BorderThickness="4,4,4,4" d:IsHidden="True"/>
                 <Button
                     x:Name="button_Copy1"
                     Width="198"
@@ -143,8 +135,43 @@
                     VerticalAlignment="Top" Background="{x:Null}"
                     Style="{DynamicResource ButtonStyle}"
                     Click="btn_Press"/>
+                <Button x:Name="button1" HorizontalAlignment="Left" Margin="530,0,0,0" VerticalAlignment="Center" Height="215" Width="215" Background="{x:Null}">
+                    <Border Canvas.Left="55"
+                            Canvas.Top="30"
+                            Width="212"
+                            Height="212"
+                            VerticalAlignment="Center"
+                            BorderThickness=".5"
+                            CornerRadius="6">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="5"
+                              Opacity=".5"
+                              ShadowDepth="3" />
+                        </Border.Effect>
+                        <Border Name="ReceiverColor"
+                            BorderBrush="#FF96B2E4"
+                            BorderThickness="3"
+                            CornerRadius="6" Width="210" Height="210">
+                            <Grid Width="198" Height="198">
+                                <Border Name="Mask"
+                                        Background="White"
+                                        BorderBrush="#FF3B5998"
+                                        BorderThickness=".5"
+                                        CornerRadius="3">
+                                </Border>
+                                <StackPanel>
+                                    <Image Name="Receiver"
+                                            Source="/Images/template.jpg" Stretch="Fill" Height="198" Width="198" />
+                                    <StackPanel.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Mask}" />
+                                    </StackPanel.OpacityMask>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Button>
             </Grid>
-            <Grid x:Name="Libriary" Background="#FF1F1F1F">
+            <Grid x:Name="Libriary" Background="#FF1F1F1F" d:IsHidden="True">
                 <Image x:Name="___BackGroundApp_png" Margin="-2,0,0,0" Source="/Images/BackGroundApp.png" Stretch="Fill"/>
                 <Button x:Name="Games" Content="Games" Margin="0,154,1427,861" Background="{x:Null}" Height="65"/>
                 <Button x:Name="Apps" Content="Apps" Margin="0,219,1427,796" Background="{x:Null}" Height="65"/>
